@@ -1,4 +1,4 @@
-if (!"serial" in navigator) {
+if ("serial" in navigator) {
   Swal.fire({
     icon: 'error',
     title: 'Web Serial API 없음',
