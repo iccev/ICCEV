@@ -106,7 +106,7 @@ div.measure_container {
 
 #FL {
   top: 10vw;
-  right: 45.5vw;
+  right: 42.5vw;
 }
 
 #FL div.weight_value {
@@ -124,7 +124,7 @@ div.measure_container {
 
 #RL {
   top: 30vw;
-  right: 45.5vw;
+  right: 42.5vw;
 }
 
 #RL div.weight_value {
@@ -132,7 +132,7 @@ div.measure_container {
 }
 
 #RR {
-  top: 34vw;
+  top: 30vw;
   right: 7vw;
 }
 
@@ -141,13 +141,13 @@ div.measure_container {
 }
 
 #SUM {
-  top: 29vw;
-  right: 26.5vw;
+  top: 28vw;
+  right: 25vw;
   color: white;
 }
 
 #SUM div.weight_value {
-  background-color: black;
+  background-color: transparent;
 }
 
 div.measure_container p {
