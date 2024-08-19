@@ -17,7 +17,7 @@ body {
 }
 
 #logo img {
-  width: 100%;
+  width: 90%;
 }
 
 #tips {
@@ -39,8 +39,8 @@ body {
   display: inline-block;
   
   position: relative;
-  top: -20.5vw;
-  right: -14vw;
+  top: -26.5vw;
+  right: -12vw;
 }
 
 #nano .indicator {
@@ -65,7 +65,7 @@ body {
 }
 
 #nano object {
-  transform: rotate(180deg);
+  transform: rotate();
 }
 
 #connect {
@@ -95,8 +95,8 @@ body {
   display: inline-block;
 
   position: relative;
-  top: 7vw;
-  right: -38vw;
+  top: 2.5vw;
+  right: -39vw;
 }
 
 div.measure_container {
@@ -106,7 +106,7 @@ div.measure_container {
 
 #FL {
   top: 10vw;
-  right: 45.5vw;
+  right: 42.5vw;
 }
 
 #FL div.weight_value {
@@ -124,7 +124,7 @@ div.measure_container {
 
 #RL {
   top: 30vw;
-  right: 45.5vw;
+  right: 42.5vw;
 }
 
 #RL div.weight_value {

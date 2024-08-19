@@ -22,20 +22,13 @@ $("#connect").click(async function() {
 async function readFromSerial() {
   // display port prompt
   const port = await navigator.serial.requestPort({
-    filters: [{ usbVendorId: 0x2341, usbProductId: 0x0042 }]
+    filters: [{ usbVendorId: 6790, usbProductId: 29987 }]
   });
 
   $("#connect").addClass("connected").addClass("yellow").removeClass("green").removeClass("red").html('<i class="fa-solid fa-fw fa-plug-circle-exclamation"></i>&ensp;연결 중...');
 
   // open selected port
-  
-  try {
-    // 포트 열기 시도
-    await port.open({ baudRate: 9600 });
-  } catch (error) {
-    console.error("포트를 여는 도중 오류 발생:", error);
-    return;  // 오류 발생 시 더 이상 진행하지 않음
-  }
+  await port.open({ baudRate: 9600 });
 
   // open stream pipe and lock port
   reader = port.readable
