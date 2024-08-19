@@ -106,7 +106,7 @@ div.measure_container {
 
 #FL {
   top: 10vw;
-  right: 42.5vw;
+  right: 45.5vw;
 }
 
 #FL div.weight_value {
@@ -115,7 +115,7 @@ div.measure_container {
 
 #FR {
   top: 10vw;
-  right: 5vw;
+  right: 7vw;
 }
 
 #FR div.weight_value {
@@ -124,7 +124,7 @@ div.measure_container {
 
 #RL {
   top: 30vw;
-  right: 42.5vw;
+  right: 45.5vw;
 }
 
 #RL div.weight_value {
@@ -132,8 +132,8 @@ div.measure_container {
 }
 
 #RR {
-  top: 30vw;
-  right: 5vw;
+  top: 34vw;
+  right: 7vw;
 }
 
 #RR div.weight_value {
@@ -141,13 +141,13 @@ div.measure_container {
 }
 
 #SUM {
-  top: 28vw;
-  right: 24vw;
+  top: 29vw;
+  right: 26.5vw;
   color: white;
 }
 
 #SUM div.weight_value {
-  background-color: transparent;
+  background-color: black;
 }
 
 div.measure_container p {
@@ -159,7 +159,7 @@ div.measure_container p {
 
 div.weight_value {
   display: inline-block;
-  padding: .5vw 2vw;
+  padding: .1vw 1vw;
 
   background-color: white;
   border-radius: 5px;
