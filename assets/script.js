@@ -22,7 +22,7 @@ $("#connect").click(async function() {
 async function readFromSerial() {
   // display port prompt
   const port = await navigator.serial.requestPort({
-    filters: [{ usbVendorId: 2341, usbProductId: 0x0042 }]
+    filters: [{ usbVendorId: 0x2341, usbProductId: 0x0042 }]
   });
 
   $("#connect").addClass("connected").addClass("yellow").removeClass("green").removeClass("red").html('<i class="fa-solid fa-fw fa-plug-circle-exclamation"></i>&ensp;연결 중...');
