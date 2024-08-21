@@ -12,14 +12,17 @@ $("#connect").click(async function () {
                 await reader.releaseLock(); // reader의 락 해제
             }
             if (port) {
+                console.log("포트를 닫는 중입니다..."); // 디버깅 로그
                 await port.close(); // 포트 닫기
+                console.log("포트가 성공적으로 닫혔습니다."); // 디버깅 로그
             }
         } catch (e) {
             Swal.fire({
                 icon: 'error',
-                title: e.message || 'Error',
-                html: '연결 해제 중 오류가 발생했습니다. 페이지를 새로고침하세요.'
+                title: '포트 닫기 오류',
+                html: `포트를 닫는 중 문제 발생: ${e.message}. 페이지를 새로고침하세요.`
             });
+            console.error("포트를 닫는 중 오류 발생:", e); // 디버깅 로그
         }
         $("#connect").removeClass("connected").removeClass("red").removeClass("yellow").addClass("green").html('<i class="fa-solid fa-fw fa-plug"></i>&ensp;연결');
     } else {
@@ -64,6 +67,7 @@ async function readFromSerial() {
             title: '연결 오류',
             html: '포트 연결 중 문제가 발생했습니다. 장치와 연결 상태를 확인하세요.'
         });
+        console.error("연결 중 오류 발생:", e); // 디버깅 로그
     } finally {
         try {
             if (reader) {
@@ -71,18 +75,22 @@ async function readFromSerial() {
                 await reader.releaseLock();
             }
             if (port) {
+                console.log("포트를 닫는 중입니다... (finally 블록)"); // 디버깅 로그
                 await port.close();
+                console.log("포트가 성공적으로 닫혔습니다. (finally 블록)"); // 디버깅 로그
             }
         } catch (e) {
             Swal.fire({
                 icon: 'error',
                 title: '포트 닫기 오류',
-                html: '포트를 닫는 중 문제가 발생했습니다. 페이지를 새로고침하세요.'
+                html: `포트를 닫는 중 문제 발생: ${e.message}. 페이지를 새로고침하세요.`
             });
+            console.error("포트를 닫는 중 오류 발생:", e); // 디버깅 로그
         }
         $("#connect").removeClass("connected").removeClass("yellow").addClass("green").html('<i class="fa-solid fa-fw fa-plug"></i>&ensp;연결');
     }
 }
+
 
 function stringParser(str) {
     let sum = 0;
