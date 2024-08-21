@@ -20,61 +20,58 @@ $("#connect").click(async function () {
 });
 
 async function readFromSerial() {
-    try {
-        // display port prompt
-        const port = await navigator.serial.requestPort();
-        $("#connect").addClass("connected").addClass("yellow").removeClass("green").removeClass("red").html('<i class="fa-solid fa-fw fa-plug-circle-exclamation"></i>&ensp;연결 중...');
+    // display port prompt
+    const port = await navigator.serial.requestPort();
 
-        // open selected port
-        await port.open({ baudRate: 9600 });
+    $("#connect").addClass("connected").addClass("yellow").removeClass("green").removeClass("red").html('<i class="fa-solid fa-fw fa-plug-circle-exclamation"></i>&ensp;연결 중...');
 
-        // open stream pipe and lock port
-        const reader = port.readable
-            .pipeThrough(new TextDecoderStream())
-            .pipeThrough(new TransformStream(new LineBreakTransformer()))
-            .getReader();
+    // open selected port
+    await port.open({ baudRate: 9600 });
 
-        while (port.readable) {
+    // open stream pipe and lock port
+    reader = port.readable
+        .pipeThrough(new TextDecoderStream())
+        .pipeThrough(new TransformStream(new LineBreakTransformer()))
+        .getReader();
+
+    while (port.readable) {
+        try {
+            while (listen) {
+                const { value, done } = await reader.read();
+                if (done) break;
+
+                stringParser(value);
+            }
+        }
+        catch (e) {
+            Swal.fire({
+                icon: 'error',
+                title: e,
+                html: '장치가 분리되었습니다. 다시 연결하려면 페이지를 새로고침하세요.'
+            });
+            $("#nano .indicator").css("background-color", "red").css("border-color", "red")
+            $("#nano .indicator_text").text("OFFLINE");
+        }
+        finally {
             try {
-                while (listen) {
-                    const { value, done } = await reader.read();
-                    if (done) break;
-                    stringParser(value);
+                if (reader) {
+                    await reader.releaseLock();  // 리더가 존재할 때만 해제
+                }
+                if (port) {
+                    await port.close();  // 포트가 존재할 때만 닫기
                 }
             } catch (e) {
                 Swal.fire({
                     icon: 'error',
-                    title: e.message || 'Error',
-                    html: '장치가 분리되었습니다. 다시 연결하려면 페이지를 새로고침하세요.'
+                    title: e,
+                    html: '포트가 닫히지 않았습니다. 다시 연결하려면 페이지를 새로고침하세요.'
                 });
                 $("#nano .indicator").css("background-color", "red").css("border-color", "red")
                 $("#nano .indicator_text").text("OFFLINE");
-                listen = false;  // Stop the loop if an error occurs
             }
         }
-    } finally {
-        // Ensure that the reader and port are properly closed
-        try {
-            if (reader) {
-                await reader.cancel();  // Cancel any ongoing reading
-                await reader.releaseLock();  // Release the lock on the reader
-            }
-            if (port) {
-                await port.close();  // Finally, close the port
-            }
-        } catch (e) {
-            Swal.fire({
-                icon: 'error',
-                title: e.message || 'Error',
-                html: '포트가 닫히지 않았습니다. 다시 연결하려면 페이지를 새로고침하세요.'
-            });
-            $("#nano .indicator").css("background-color", "red").css("border-color", "red");
-            $("#nano .indicator_text").text("OFFLINE");
-        }
-        $("#connect").removeClass("connected").removeClass("red").addClass("green").html('<i class="fa-solid fa-fw fa-plug"></i>&ensp;연결');
     }
 }
-
 
 function stringParser(str) {
     let sum = 0;
