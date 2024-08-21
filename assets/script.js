@@ -1,75 +1,86 @@
-if (!"serial" in navigator) {
-    Swal.fire({
-        icon: 'error',
-        title: 'Web Serial API 없음',
-        html: `<br>시리얼 통신 API를 지원하지 않는 브라우저입니다.<br><br>이 서비스는<br><br><a class="btn green" href="https://www.google.com/chrome/"><i class="fa-brands fa-chrome"></i>&ensp;Chrome</a>&emsp;<a class="btn blue" href="https://www.microsoft.com/en-us/edge#evergreen"><i class="fa-brands fa-edge"></i>&ensp;Edge</a>&emsp;<a class="btn red" href="https://www.opera.com/ko"><i class="fa-brands fa-opera"></i>&ensp;Opera</a><br><br>에서만 사용 가능합니다.`
-    })
-}
+let port; // 전역 변수로 포트 선언
+let reader; // 전역 변수로 reader 선언
+let listen = true;
 
-listen = true;
 $("#connect").click(async function () {
-    // stop connection
     if ($("#connect").hasClass("connected")) {
+        // 연결 해제
         listen = false;
-        await reader.releaseLock();
+        try {
+            if (reader) {
+                await reader.cancel(); // reader를 취소
+                await reader.releaseLock(); // reader의 락 해제
+            }
+            if (port) {
+                await port.close(); // 포트 닫기
+            }
+        } catch (e) {
+            Swal.fire({
+                icon: 'error',
+                title: e.message || 'Error',
+                html: '연결 해제 중 오류가 발생했습니다. 페이지를 새로고침하세요.'
+            });
+        }
         $("#connect").removeClass("connected").removeClass("red").removeClass("yellow").addClass("green").html('<i class="fa-solid fa-fw fa-plug"></i>&ensp;연결');
+    } else {
+        // 연결 시도
+        readFromSerial();
     }
-
-    // open connection
-    else readFromSerial();
 });
 
 async function readFromSerial() {
-    // display port prompt
-    const port = await navigator.serial.requestPort();
+    try {
+        // 시리얼 포트 요청
+        port = await navigator.serial.requestPort();
 
-    $("#connect").addClass("connected").addClass("yellow").removeClass("green").removeClass("red").html('<i class="fa-solid fa-fw fa-plug-circle-exclamation"></i>&ensp;연결 중...');
+        $("#connect").addClass("connected").addClass("yellow").removeClass("green").removeClass("red").html('<i class="fa-solid fa-fw fa-plug-circle-exclamation"></i>&ensp;연결 중...');
 
-    // open selected port
-    await port.open({ baudRate: 9600 });
+        // 선택한 포트 열기
+        await port.open({ baudRate: 9600 });
 
-    // open stream pipe and lock port
-    reader = port.readable
-        .pipeThrough(new TextDecoderStream())
-        .pipeThrough(new TransformStream(new LineBreakTransformer()))
-        .getReader();
+        // 스트림 열기 및 리더 얻기
+        reader = port.readable
+            .pipeThrough(new TextDecoderStream())
+            .pipeThrough(new TransformStream(new LineBreakTransformer()))
+            .getReader();
 
-    while (port.readable) {
-        try {
-            while (listen) {
+        while (port.readable && listen) {
+            try {
                 const { value, done } = await reader.read();
                 if (done) break;
-
                 stringParser(value);
-            }
-        }
-        catch (e) {
-            Swal.fire({
-                icon: 'error',
-                title: e,
-                html: '장치가 분리되었습니다. 다시 연결하려면 페이지를 새로고침하세요.'
-            });
-            $("#nano .indicator").css("background-color", "red").css("border-color", "red")
-            $("#nano .indicator_text").text("OFFLINE");
-        }
-        finally {
-            try {
-                if (reader) {
-                    await reader.releaseLock();  // 리더가 존재할 때만 해제
-                }
-                if (port) {
-                    await port.close();  // 포트가 존재할 때만 닫기
-                }
             } catch (e) {
                 Swal.fire({
                     icon: 'error',
-                    title: e,
-                    html: '포트가 닫히지 않았습니다. 다시 연결하려면 페이지를 새로고침하세요.'
+                    title: '데이터 읽기 오류',
+                    html: '시리얼 데이터를 읽는 중 문제가 발생했습니다. 장치를 확인하세요.'
                 });
-                $("#nano .indicator").css("background-color", "red").css("border-color", "red")
-                $("#nano .indicator_text").text("OFFLINE");
+                break;
             }
         }
+    } catch (e) {
+        Swal.fire({
+            icon: 'error',
+            title: '연결 오류',
+            html: '포트 연결 중 문제가 발생했습니다. 장치와 연결 상태를 확인하세요.'
+        });
+    } finally {
+        try {
+            if (reader) {
+                await reader.cancel();
+                await reader.releaseLock();
+            }
+            if (port) {
+                await port.close();
+            }
+        } catch (e) {
+            Swal.fire({
+                icon: 'error',
+                title: '포트 닫기 오류',
+                html: '포트를 닫는 중 문제가 발생했습니다. 페이지를 새로고침하세요.'
+            });
+        }
+        $("#connect").removeClass("connected").removeClass("yellow").addClass("green").html('<i class="fa-solid fa-fw fa-plug"></i>&ensp;연결');
     }
 }
 
