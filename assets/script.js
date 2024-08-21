@@ -97,6 +97,8 @@ function stringParser(str) {
             let parsedValue = Number(value);
             parsedValue = Math.abs(parsedValue) < 0.1 ? Math.abs(parsedValue) : parsedValue;
 
+            // 이 부분에서 선택자를 확인합니다.
+            // ID 기반 선택자라면 #key, 클래스 기반이라면 .kg만 사용해야 합니다.
             $(`#${key}`).find(".kg").text(parsedValue.toFixed(1));
             graph_data[key].push({ x: new Date(), y: parsedValue });
             sum += parsedValue;
@@ -119,6 +121,7 @@ function stringParser(str) {
         });
     }
 }
+
 
 let graph_data = {
     FL: [],
