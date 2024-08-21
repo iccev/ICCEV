@@ -16,14 +16,12 @@ $("#connect").click(async function() {
   }
 
   // open connection
-  else readFromSerial();
+  else readFromSerial() ;
 });
 
 async function readFromSerial() {
     // display port prompt
-    const port = await navigator.serial.requestPort({
-        filters: [{ usbVendorId: 0x2341, usbProductId: 0x0042 }]
-    });
+    const port = await navigator.serial.requestPort();
 
     $("#connect").addClass("connected").addClass("yellow").removeClass("green").removeClass("red").html('<i class="fa-solid fa-fw fa-plug-circle-exclamation"></i>&ensp;연결 중...');
 
