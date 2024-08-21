@@ -1,4 +1,4 @@
-if (!"serial" in navigator) {
+if (!("serial" in navigator)) {
     Swal.fire({
         icon: 'error',
         title: 'Web Serial API 없음',
@@ -78,7 +78,8 @@ function stringParser(str) {
             let parsedValue = Number(value);
             parsedValue = Math.abs(parsedValue) < 0.1 ? Math.abs(parsedValue) : parsedValue;
 
-            $(`#${key} .kg`).text(parsedValue.toFixed(1));
+            // ID와 클래스 선택자를 분리하여 사용
+            $(`#${key}`).find(".kg").text(parsedValue.toFixed(1));
             graph_data[key].push({ x: new Date(), y: parsedValue });
             sum += parsedValue;
         }
