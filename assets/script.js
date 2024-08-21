@@ -52,9 +52,6 @@ async function readFromSerial() {
             $("#nano .indicator").css("background-color", "red").css("border-color", "red")
             $("#nano .indicator_text").text("OFFLINE");
         }
-        finally {
-            await reader.releaseLock();
-        }
         try {
             await port.close();
         }
