@@ -70,24 +70,48 @@ async function readFromSerial() {
 }
 
 function stringParser(str) {
+    console.log("수신된 데이터:", str);
+
     try {
+        // 빈 문자열 또는 예상치 못한 데이터 무시
+        if (!str || str.trim() === "") {
+            console.warn("빈 문자열 또는 유효하지 않은 데이터 수신");
+            return;
+        }
+
         let sum = 0;
         const weights = str.slice(1).split('|');
+        console.log("파싱된 데이터:", weights);
+
+        if (weights.length === 0) {
+            throw new Error("데이터 파싱 실패: 유효하지 않은 형식");
+        }
+
         for (let weight of weights) {
             const [key, value] = weight.split(':');
+            if (!key || isNaN(Number(value))) {
+                console.warn(`무시된 데이터: ${weight}`);
+                continue; // key나 value가 없거나 value가 숫자가 아닌 경우 무시
+            }
+
             let parsedValue = Number(value);
             parsedValue = Math.abs(parsedValue) < 0.1 ? Math.abs(parsedValue) : parsedValue;
 
-            // ID와 클래스 선택자를 분리하여 사용
             $(`#${key}`).find(".kg").text(parsedValue.toFixed(1));
             graph_data[key].push({ x: new Date(), y: parsedValue });
             sum += parsedValue;
         }
+
+        if (isNaN(sum)) {
+            throw new Error("총합 계산 실패");
+        }
+
         $("#SUM .kg").text(sum.toFixed(1));
         $("#nano .indicator").css("background-color", "green").css("border-color", "green");
         $("#nano .indicator_text").text("ONLINE");
         $("#connect").addClass("connected").addClass("red").removeClass("yellow").html('<i class="fa-solid fa-fw fa-plug-circle-xmark"></i>&ensp;해제');
     } catch (e) {
+        console.error("데이터 파싱 오류:", e);
         Swal.fire({
             icon: 'error',
             title: '데이터 파싱 오류',
