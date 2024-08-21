@@ -20,69 +20,55 @@ $("#connect").click(async function() {
 });
 
 async function readFromSerial() {
-    try {
-        // 포트 선택 프롬프트 표시
-        const port = await navigator.serial.requestPort({
-            filters: [{ usbVendorId: 0x2341, usbProductId: 0x0042 }]
-        });
+    // display port prompt
+    const port = await navigator.serial.requestPort({
+        filters: [{ usbVendorId: 0x2341, usbProductId: 0x0042 }]
+    });
 
-        $("#connect").addClass("connected").addClass("yellow").removeClass("green").removeClass("red").html('<i class="fa-solid fa-fw fa-plug-circle-exclamation"></i>&ensp;연결 중...');
+    $("#connect").addClass("connected").addClass("yellow").removeClass("green").removeClass("red").html('<i class="fa-solid fa-fw fa-plug-circle-exclamation"></i>&ensp;연결 중...');
 
-        // 선택된 포트 열기
-        await port.open({ baudRate: 9600 });
-        console.log('포트가 열렸습니다.');
+    // open selected port
+    await port.open({ baudRate: 9600 });
 
-        // 스트림 파이프 열고 포트 잠금
-        reader = port.readable
-            .pipeThrough(new TextDecoderStream())
-            .pipeThrough(new TransformStream(new LineBreakTransformer()))
-            .getReader();
-        console.log('리더 초기화 완료');
+    // open stream pipe and lock port
+    reader = port.readable
+        .pipeThrough(new TextDecoderStream())
+        .pipeThrough(new TransformStream(new LineBreakTransformer()))
+        .getReader();
 
-        while (port.readable) {
-            try {
-                while (listen) {
-                    const { value, done } = await reader.read();
-                    if (done) break;
+    while (port.readable) {
+        try {
+            while (listen) {
+                const { value, done } = await reader.read();
+                if (done) break;
 
-                    console.log('데이터 수신:', value); // 수신된 데이터 로그 출력
-                    stringParser(value);
-                }
-            } catch (readError) {
-                console.error('데이터 읽기 오류:', readError);
-                Swal.fire({
-                    icon: 'error',
-                    title: '읽기 오류',
-                    text: '장치에서 데이터를 읽는 중 오류가 발생했습니다. 연결을 확인하고 다시 시도하세요.',
-                });
-                $("#nano .indicator").css("background-color", "red").css("border-color", "red");
-                $("#nano .indicator_text").text("OFFLINE");
-            } finally {
-                await reader.releaseLock();
-            }
-
-            try {
-                await port.close();
-                console.log('포트가 닫혔습니다.');
-            } catch (closeError) {
-                console.error('포트 닫기 오류:', closeError);
-                Swal.fire({
-                    icon: 'error',
-                    title: '포트 닫기 오류',
-                    text: '포트를 제대로 닫지 못했습니다. 페이지를 새로고침하고 다시 연결해보세요.',
-                });
-                $("#nano .indicator").css("background-color", "red").css("border-color", "red");
-                $("#nano .indicator_text").text("OFFLINE");
+                stringParser(value);
             }
         }
-    } catch (connectionError) {
-        console.error('연결 오류:', connectionError);
-        Swal.fire({
-            icon: 'error',
-            title: '연결 오류',
-            text: '장치에 연결하지 못했습니다. 장치가 제대로 연결되어 있는지 확인하고 다시 시도하세요.',
-        });
-        $("#connect").removeClass("yellow").addClass("red").removeClass("green").html('<i class="fa-solid fa-fw fa-plug-circle-xmark"></i>&ensp;해제');
+        catch (e) {
+            Swal.fire({
+                icon: 'error',
+                title: e,
+                html: '장치가 분리되었습니다. 다시 연결하려면 페이지를 새로고침하세요.'
+            });
+            $("#nano .indicator").css("background-color", "red").css("border-color", "red")
+            $("#nano .indicator_text").text("OFFLINE");
+        }
+        finally {
+            await reader.releaseLock();
+        }
+        try {
+            await port.close();
+        }
+        catch (e) {
+            Swal.fire({
+                icon: 'error',
+                title: e,
+                html: '포트가 닫히지 않았습니다. 다시 연결하려면 페이지를 새로고침하세요.'
+            });
+            $("#nano .indicator").css("background-color", "red").css("border-color", "red")
+            $("#nano .indicator_text").text("OFFLINE");
+        }
     }
 }
 
