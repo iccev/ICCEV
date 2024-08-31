@@ -38,7 +38,7 @@ body {
   height: auto;
   display: inline-block;
   
-  position: relative;
+  position: absolute;
   top: -26.5vw;
   right: -12vw;
 }
@@ -94,7 +94,7 @@ body {
   height: auto;
   display: inline-block;
 
-  position: relative;
+  position: absolute;
   top: 2.5vw;
   right: -39vw;
 }
