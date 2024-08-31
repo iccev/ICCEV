@@ -22,7 +22,7 @@ body {
 
 #tips {
   position: absolute;
-  padding: 1.2vw;
+  padding: 0.2vw;
   right: 0;
 }
 
@@ -34,12 +34,13 @@ body {
 }
 
 #nano {
-  width: 90%;
+  width: 17vw;
+  height: auto;
   display: inline-block;
   
   position: absolute;
-  top: 10vw;
-  right: -3vw;
+  top: 9.5vw;
+  left: 12vw;
 }
 
 #nano .indicator {
@@ -89,12 +90,13 @@ body {
 }
 
 #car {
-  width: 100%;
+  width: 25vw;
+  height: 50vw;
   display: inline-block;
 
   position: absolute;
-  top: 12vw;
-  right: -63vw;
+  top: 4.5vw;
+  right: 16.5vw;
 }
 
 div.measure_container {
@@ -104,7 +106,7 @@ div.measure_container {
 
 #FL {
   top: 10vw;
-  right: 38.5vw;
+  right: 42.5vw;
 }
 
 #FL div.weight_value {
@@ -113,7 +115,7 @@ div.measure_container {
 
 #FR {
   top: 10vw;
-  right: 10vw;
+  right: 5vw;
 }
 
 #FR div.weight_value {
@@ -121,8 +123,8 @@ div.measure_container {
 }
 
 #RL {
-  top: 26vw;
-  right: 38.5vw;
+  top: 30vw;
+  right: 42.5vw;
 }
 
 #RL div.weight_value {
@@ -130,8 +132,8 @@ div.measure_container {
 }
 
 #RR {
-  top: 26vw;
-  right: 10vw;
+  top: 30vw;
+  right: 5vw;
 }
 
 #RR div.weight_value {
@@ -139,8 +141,8 @@ div.measure_container {
 }
 
 #SUM {
-  top: 25vw;
-  right: 24.7vw;
+  top: 28vw;
+  right: 24vw;
   color: white;
 }
 
@@ -177,7 +179,7 @@ div.weight_value span.kg {
 
 #chart {
   position: absolute;
-  top: 22vw;
+  top: 27vw;
   left: 2vw;
   width: 37vw;
 }
