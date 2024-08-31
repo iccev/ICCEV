@@ -22,7 +22,7 @@ body {
 
 #tips {
   position: absolute;
-  padding: 0.2vw;
+  padding: 1.2vw;
   right: 0;
 }
 
@@ -34,7 +34,7 @@ body {
 }
 
 #nano {
-  width: auto;
+  width: 15%;
   height: auto;
   display: inline-block;
   
@@ -90,13 +90,13 @@ body {
 }
 
 #car {
-  width: auto;
+  width: 20%;
   height: auto;
   display: inline-block;
 
   position: absolute;
-  top: 4.5vw;
-  right: 17.5vw;
+  top: 6.5vw;
+  right: 19.5vw;
 }
 
 div.measure_container {
@@ -179,7 +179,7 @@ div.weight_value span.kg {
 
 #chart {
   position: absolute;
-  top: 27vw;
+  top: 25vw;
   left: 2vw;
   width: 37vw;
 }
