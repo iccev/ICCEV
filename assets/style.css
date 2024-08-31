@@ -34,13 +34,12 @@ body {
 }
 
 #nano {
-  width: 17vw;
-  height: auto;
+  width: 90%;
   display: inline-block;
   
   position: absolute;
-  top: 8vw;
-  right: 70vw;
+  top: 10vw;
+  right: -3vw;
 }
 
 #nano .indicator {
@@ -90,13 +89,12 @@ body {
 }
 
 #car {
-  width: 25vw;
-  height: auto;
+  width: 100%;
   display: inline-block;
 
   position: absolute;
-  top: 2.5vw;
-  right: -39vw;
+  top: 12vw;
+  right: -63vw;
 }
 
 div.measure_container {
@@ -106,7 +104,7 @@ div.measure_container {
 
 #FL {
   top: 10vw;
-  right: 42.5vw;
+  right: 38.5vw;
 }
 
 #FL div.weight_value {
@@ -115,7 +113,7 @@ div.measure_container {
 
 #FR {
   top: 10vw;
-  right: 5vw;
+  right: 10vw;
 }
 
 #FR div.weight_value {
@@ -123,8 +121,8 @@ div.measure_container {
 }
 
 #RL {
-  top: 30vw;
-  right: 42.5vw;
+  top: 26vw;
+  right: 38.5vw;
 }
 
 #RL div.weight_value {
@@ -132,8 +130,8 @@ div.measure_container {
 }
 
 #RR {
-  top: 30vw;
-  right: 5vw;
+  top: 26vw;
+  right: 10vw;
 }
 
 #RR div.weight_value {
@@ -141,8 +139,8 @@ div.measure_container {
 }
 
 #SUM {
-  top: 28vw;
-  right: 24vw;
+  top: 25vw;
+  right: 24.7vw;
   color: white;
 }
 
