@@ -34,7 +34,7 @@ body {
 }
 
 #nano {
-  width: 17vw;
+  width: auto;
   height: auto;
   display: inline-block;
   
@@ -90,13 +90,13 @@ body {
 }
 
 #car {
-  width: 25vw;
-  height: 50vw;
+  width: auto;
+  height: auto;
   display: inline-block;
 
   position: absolute;
   top: 4.5vw;
-  right: 16.5vw;
+  right: 17.5vw;
 }
 
 div.measure_container {
