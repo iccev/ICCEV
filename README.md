@@ -4,6 +4,8 @@ ICC EV 프로젝트
 
 개발 코드 출처: 아주대 소프트웨어학과 18학번 https://luftaquila.io
 
+자세한 사용방법을 한글 파일에 설명해놨습니다.
+
 ### 서비스 URL
 https://iccev.github.io/ICCEV
 
