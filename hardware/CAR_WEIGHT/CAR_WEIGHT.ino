@@ -1,6 +1,6 @@
 #include "HX711.h"
 #define calibration_factor_FR -28490.0
-#define calibration_factor_FL 23800.0
+#define calibration_factor_FL 24750.0
 #define calibration_factor_RR -28450.0
 #define calibration_factor_RL -27300.0
 #define DOUT_FR 3
